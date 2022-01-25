@@ -1,10 +1,30 @@
 package org.eclipse.kura.ai.triton.server;
 
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.kura.ai.inference.engine.InferenceEngineService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TritonServerServiceImpl implements InferenceEngineService {
+
+    private static final Logger logger = LoggerFactory.getLogger(TritonServerServiceImpl.class);
+
+    public void activate(Map<String, Object> properties) {
+        logger.info("Activate TritonServerService...");
+
+    }
+
+    public void deactivate() {
+        logger.info("Deactivate TritonServerService...");
+
+    }
+
+    public void updated(Map<String, Object> properties) {
+        logger.info("Update TritonServerService...");
+
+    }
 
     @Override
     public void loadModel(String modelName) {

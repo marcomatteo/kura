@@ -3,6 +3,7 @@ package org.eclipse.kura.ai.triton.server;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.kura.ai.inference.engine.InferenceEngineService;
+import org.eclipse.kura.ai.triton.server.TritonServerServiceImpl;
 import org.junit.Test;
 
 public class TritonServerServiceImplTest {
