@@ -18,105 +18,55 @@
          name="Nvidia Triton Server" 
          description="Configuration for the Nvidia Triton Server">
         
-       <!-- <Icon resource="ClockService" size="32"/>
+       <!-- <Icon resource="ClockService" size="32"/>-->
         
-       	<AD id="enabled"
-            name="enabled"
-            type="Boolean"
-            cardinality="0"
-            required="true"
-            default="true"
-            description="Whether or not to enable the ClockService"/>
-            
-        <AD id="clock.set.hwclock"  
-            name="clock.set.hwclock"
+        <AD id="enable"  
+            name="Enable the Nvidia Server"
             type="Boolean"
             cardinality="0" 
             required="true"
-            default="true" 
-            description="Whether or not to sync the system hardware clock after the system time gets set"/>
-        
-        <AD id="clock.provider"  
-            name="clock.provider"
-            type="String"
-            cardinality="0" 
+            default="false" 
+            description="Start an instance of Nvidia Server on localhost.">
+        </AD>
+       
+        <AD id="server.ports"  
+            name="Nvidia Triton Server ports"
+            type="Integer"
+            cardinality="3" 
+            min="1024"
+            max="65535"
             required="true"
-            default="java-ntp" 
-            description="Source for setting the system clock. Verify the availabiliy of the selected provider before activate it.">
-            
-               <Option label="java-ntp" value="java-ntp"/>
-               <Option label="ntpd"     value="ntpd"/>
-               <Option label="chrony-advanced"	value="chrony-advanced"/>
+            default="5000,5001,5002" 
+            description="The ports used by the server to provide HTTP, GPRC and Metrics services.">
         </AD>
 
-        <AD id="clock.ntp.host"  
-            name="clock.ntp.host"
+        <AD id="model.repository.path"  
+            name="The path for the model repository"
             type="String"
             cardinality="0" 
             required="true"
-            default="0.pool.ntp.org" 
-            description="The hostname that provides the system time via NTP"/>
+            default="/home/eurotech/Downloads/server/docs/examples/model_repository" 
+            description="The path on the filesystem where the models are stored.">
+       </AD>
 
-        <AD id="clock.ntp.port"  
-            name="clock.ntp.port"
-            type="Integer"
-            cardinality="0" 
-            required="true"
-            min="1"
-            max="65535"
-            default="123" 
-            description="The port number that provides the system time via NTP"/>
-
-        <AD id="clock.ntp.timeout"  
-            name="clock.ntp.timeout"
-            type="Integer"
-            cardinality="0" 
-            required="true"
-            min="1000"
-            default="10000" 
-            description="The NTP timeout in milliseconds"/>
-
-        <AD id="clock.ntp.max-retry"  
-            name="clock.ntp.max-retry"
-            type="Integer"
-            cardinality="0" 
-            required="true"
-            min="0"
-            default="0" 
-            description="The maximum number of retries for the initial synchronization (with interval clock.ntp.retry.interval). If set to 0 the service will retry forever."/>
-
-        <AD id="clock.ntp.retry.interval"  
-            name="clock.ntp.retry.interval"
-            type="Integer"
-            cardinality="0" 
-            required="true"
-            min="1"
-            default="5" 
-            description="When sync fails, interval in seconds between each retry."/>
-
-        <AD id="clock.ntp.refresh-interval"  
-            name="clock.ntp.refresh-interval"
-            type="Integer"
-            cardinality="0" 
-            required="true"
-            default="3600" 
-            description="Whether or not to sync the clock and if so, the frequency in seconds.  If less than zero - no update, if equal to zero - sync once at startup, if greater than zero - the frequency in seconds to perform a new clock sync"/>
-        
-        <AD id="rtc.filename"  
-            name="RTC File Name"
+        <AD id="backends.path"  
+            name="The path for the backends"
             type="String"
             cardinality="0" 
             required="true"
-            default="/dev/rtc0" 
-            description="The RTC File Name. It defaults to /dev/rtc0. This option is not used if chrony-advanced option is selected in clock.provider."/>
+            default="/home/eurotech/Downloads/tritonserver/backends" 
+            description="The path on the filesystem where the backends are stored.">
+            </AD>
             
-        <AD id="chrony.advanced.config"
-            name="Chrony Configuration"
+        <AD id="backends.config"  
+            name="The optional configuration for the backends"
             type="String"
-            cardinality="0"
-            required="false"
-            description="Chrony configuration file.|TextArea" />-->
-            
+            cardinality="0" 
+            required="true"
+            default="tensorflow,version=2" 
+            description="A semi-colon separated list of configuration for the backends. i.e. tensorflow,version=2;tensorflow,allow-soft-placement=false">
+        </AD>
+
     </OCD>
     <Designate pid="org.eclipse.kura.ai.triton.server.TritonServerService">
         <Object ocdref="org.eclipse.kura.ai.triton.server.TritonServerService"/>
