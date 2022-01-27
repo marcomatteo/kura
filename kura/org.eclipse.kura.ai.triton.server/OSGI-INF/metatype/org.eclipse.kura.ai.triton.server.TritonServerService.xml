@@ -36,7 +36,7 @@
             min="1024"
             max="65535"
             required="true"
-            default="5000,5001,5002" 
+            default="4000,4001,4002" 
             description="The ports used by the server to provide HTTP, GPRC and Metrics services.">
         </AD>
 

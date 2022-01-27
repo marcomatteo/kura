@@ -24,13 +24,13 @@ public class TritonServerServiceImpl implements InferenceEngineService, Configur
     private TritonServerServiceOptions options;
     private Command serverCommand;
 
-    public void setExecutorService(CommandExecutorService executorService) {
+    public void setCommandExecutorService(CommandExecutorService executorService) {
         if (isNull(this.executorService)) {
             this.executorService = executorService;
         }
     }
 
-    public void unsetExecutorService(CommandExecutorService executorService) {
+    public void unsetCommandExecutorService(CommandExecutorService executorService) {
         if (this.executorService == executorService) {
             this.executorService = null;
         }
