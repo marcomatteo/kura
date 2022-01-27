@@ -7,7 +7,7 @@ Bundle-Vendor: Eclipse Kura
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Service-Component: OSGI-INF/*.xml
 Bundle-ClassPath: .,
- lib/java-api-0.0.1.jar
+ lib/triton-java-api.jar
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.commons.io;version="2.4.0",
  org.eclipse.kura;version="[1.0,2.0)",

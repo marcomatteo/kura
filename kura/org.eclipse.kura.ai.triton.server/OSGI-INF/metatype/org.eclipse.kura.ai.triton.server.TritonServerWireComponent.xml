@@ -14,7 +14,7 @@
 
 -->
 <MetaData xmlns="http://www.osgi.org/xmlns/metatype/v1.2.0" localization="en_us">
-    <OCD id="org.eclipse.kura.ai.triton.server.wire.provider.TritonServerWireComponent" 
+    <OCD id="org.eclipse.kura.ai.triton.server.TritonServerWireComponent" 
          name="Nvidia Triton Server Wire Component" 
          description="Configuration for the Nvidia Triton Server Wire Component">
         
@@ -114,7 +114,7 @@
         </AD>
 
     </OCD>
-    <Designate pid="org.eclipse.kura.ai.triton.server.wire.provider.TritonServerWireComponent">
-        <Object ocdref="org.eclipse.kura.ai.triton.server.wire.provider.TritonServerWireComponent"/>
+    <Designate factoryPid="org.eclipse.kura.ai.triton.server.TritonServerWireComponent">
+        <Object ocdref="org.eclipse.kura.ai.triton.server.TritonServerWireComponent"/>
     </Designate>
 </MetaData>

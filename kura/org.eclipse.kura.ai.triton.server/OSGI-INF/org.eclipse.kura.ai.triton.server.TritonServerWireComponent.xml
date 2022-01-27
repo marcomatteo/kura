@@ -13,7 +13,7 @@
 	 Eurotech
 
 -->
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" configuration-policy="require" deactivate="deactivate" enabled="true" immediate="true" modified="updated" name="org.eclipse.kura.ai.triton.server.wire.provider.TritonServerWireComponent">
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" configuration-policy="require" deactivate="deactivate" enabled="true" immediate="true" modified="updated" name="org.eclipse.kura.ai.triton.server.TritonServerWireComponent">
    <implementation class="org.eclipse.kura.ai.triton.server.wire.provider.TritonServerWireComponent"/>
    <service>
       <provide interface="org.eclipse.kura.configuration.ConfigurableComponent"/>
