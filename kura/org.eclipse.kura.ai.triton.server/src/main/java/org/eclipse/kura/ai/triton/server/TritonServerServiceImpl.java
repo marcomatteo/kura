@@ -23,6 +23,7 @@ public class TritonServerServiceImpl implements InferenceEngineService, Configur
     private CommandExecutorService executorService;
     private TritonServerServiceOptions options;
     private Command serverCommand;
+    private String[] serverCommandLine;
 
     public void setCommandExecutorService(CommandExecutorService executorService) {
         if (isNull(this.executorService)) {
@@ -39,6 +40,7 @@ public class TritonServerServiceImpl implements InferenceEngineService, Configur
     protected void activate(Map<String, Object> properties) {
         logger.info("Activate TritonServerService...");
         this.options = new TritonServerServiceOptions(properties);
+        this.serverCommand = createServerCommand();
         startServer();
     }
 
@@ -86,8 +88,7 @@ public class TritonServerServiceImpl implements InferenceEngineService, Configur
     }
 
     private void startServer() {
-        if (this.options.isEnabled()) {
-            this.serverCommand = createServerCommand();
+        if (this.options.isEnabled() && !isServerRunning()) {
             this.executorService.execute(serverCommand, status -> {
                 if (status.getExitStatus().isSuccessful()) {
                     logger.info("Nvidia Triton Server started");
@@ -110,7 +111,15 @@ public class TritonServerServiceImpl implements InferenceEngineService, Configur
     }
 
     private void stopServer() {
-        this.executorService.kill(this.serverCommand.getCommandLine(), LinuxSignal.SIGINT);
+        this.executorService.kill(this.serverCommandLine, LinuxSignal.SIGINT);
+    }
+
+    private boolean isServerRunning() {
+        boolean isRunning = false;
+        if (this.executorService.isRunning(this.serverCommandLine)) {
+            isRunning = true;
+        }
+        return isRunning;
     }
 
     private Command createServerCommand() {
@@ -122,8 +131,15 @@ public class TritonServerServiceImpl implements InferenceEngineService, Configur
         commandString.add("--http-port=" + this.options.getHttpPorts());
         commandString.add("--grpc-port=" + this.options.getGrpcPorts());
         commandString.add("--metrics-port=" + this.options.getMetricsPorts());
+        this.serverCommandLine = commandString.toArray(new String[0]);
+        commandString.add("2>&1");
+        commandString.add("|");
+        commandString.add("systemd-cat");
+        commandString.add("-t tritonserver");
+        commandString.add("-p info");
         Command command = new Command(commandString.toArray(new String[0]));
-        command.setTimeout(120);
+        command.setTimeout(-1);
+        command.setExecuteInAShell(true);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ByteArrayOutputStream err = new ByteArrayOutputStream();
         command.setErrorStream(err);

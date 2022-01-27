@@ -87,7 +87,7 @@ public class TritonServerServiceImplTest {
         doNothing().when(this.executorService).execute(commandCapture.capture(), anyObject());
         when(this.executorService.kill(getStartCommand().getCommandLine(), LinuxSignal.SIGINT)).thenReturn(true);
 
-        this.engine.setExecutorService(this.executorService);
+        this.engine.setCommandExecutorService(this.executorService);
     }
 
     private void givenServerActivated() {
@@ -111,7 +111,7 @@ public class TritonServerServiceImplTest {
     }
 
     private void thenServerStops() {
-        verify(this.executorService, times(1)).kill(getStartCommand().getCommandLine(), LinuxSignal.SIGINT);
+        verify(this.executorService, times(1)).kill(getStopCommandLine(), LinuxSignal.SIGINT);
     }
 
     private void thenResultIsNotEmpty() {
@@ -139,7 +139,27 @@ public class TritonServerServiceImplTest {
         commandString.add("--http-port=" + serverPorts[0]);
         commandString.add("--grpc-port=" + serverPorts[1]);
         commandString.add("--metrics-port=" + serverPorts[2]);
+        commandString.add("2>&1");
+        commandString.add("|");
+        commandString.add("systemd-cat");
+        commandString.add("-t tritonserver");
+        commandString.add("-p info");
         Command command = new Command(commandString.toArray(new String[0]));
+        command.setExecuteInAShell(true);
         return command;
+    }
+
+    private String[] getStopCommandLine() {
+        List<String> commandString = new ArrayList<>();
+        commandString.add("tritonserver");
+        commandString.add("--model-repository=" + this.modelRepositoryPath);
+        commandString.add("--backend-directory=" + this.backendRepoPath);
+        String[] configs = this.backendConfig.split(";");
+        commandString.add("--backend-config=" + configs[0]);
+        commandString.add("--backend-config=" + configs[1]);
+        commandString.add("--http-port=" + serverPorts[0]);
+        commandString.add("--grpc-port=" + serverPorts[1]);
+        commandString.add("--metrics-port=" + serverPorts[2]);
+        return commandString.toArray(new String[0]);
     }
 }
