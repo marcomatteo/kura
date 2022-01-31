@@ -213,7 +213,7 @@ public class TritonServerClient implements WireEmitter, WireReceiver, Configurab
 
     private void startInferenceServerClient(String ipServerAddress) {
         try {
-            this.tritonClient = new InferenceServerClient(ipServerAddress, 5000, 5000);
+            setInferenceServerClient(new InferenceServerClient(ipServerAddress, 5000, 5000));
         } catch (IOException e) {
             logger.error("Cannot connect to Nvidia Triton server {}", ipServerAddress, e);
         }
@@ -221,11 +221,17 @@ public class TritonServerClient implements WireEmitter, WireReceiver, Configurab
 
     private void closeInferenceServerClient() {
         try {
-            this.tritonClient.close();
-            this.tritonClient = null;
+            if (nonNull(this.tritonClient)) {
+                this.tritonClient.close();
+                this.tritonClient = null;
+            }
         } catch (Exception e) {
             logger.error("Cannot close connection to Nvidia Triton Server");
         }
+    }
+
+    protected void setInferenceServerClient(InferenceServerClient client) {
+        this.tritonClient = client;
     }
 
     private InferInput createInferInput() {
